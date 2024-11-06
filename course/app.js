@@ -1,9 +1,11 @@
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
+require("dotenv").config();
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+const cors = require('cors');
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -17,7 +19,7 @@ var app = express();
 
 async function connectDB() {
   try {
-    await mongoose.connect("mongodb://localhost:27017/Course", {
+    await mongoose.connect("mongodb://localhost:27017/Coursedb", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -28,6 +30,10 @@ async function connectDB() {
 }
 
 connectDB();
+// Enable CORS for a specific origin
+app.use(cors({
+  origin: 'http://localhost:3000' // or your deployed Next.js app URL
+}));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
